@@ -2,20 +2,39 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 
 export default class App extends Component {
-  state = { inputValue: null }
+  state = {
+    items: [],
+    inputValue: null
+  }
+
+  addNewItem = () => {
+    const { items, inputValue } = this.state
+    const newItems = items.concat(inputValue)
+    this.setState({ items: newItems })
+  }
+
   render() {
-    const { inputValue } = this.state
+    const { inputValue, items } = this.state
     return (
       <View style={styles.container}>
-        <TextInput 
-          style={styles.input} 
-          value ={inputValue} 
-          onChangeText={value => this.setState({ inputValue: value })}
-        />
-        <TouchableOpacity style={styles.addButton}>
-          <Text style={styles.buttonText}>ADD</Text>
-        </TouchableOpacity>
-        <Text style={styles.theValue}>{ inputValue }</Text>
+        <View style={styles.inputRow}>
+          <TextInput 
+            style={styles.input} 
+            value ={inputValue} 
+            onChangeText={value => this.setState({ inputValue: value })}
+          />
+          <TouchableOpacity style={styles.addButton} onPress={this.addNewItem}>
+            <Text style={styles.buttonText}>ADD</Text>
+          </TouchableOpacity>
+          <Text style={styles.theValue}>{ inputValue }</Text>
+        </View>
+        {items.map((item, i) => {
+          return (
+            <Text key={i} style={styles.theValue}>
+              {item}
+            </Text>
+          )
+        })}
       </View>
     );
   }
