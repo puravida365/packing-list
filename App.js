@@ -12,6 +12,9 @@ export default class App extends Component {
           value ={inputValue} 
           onChangeText={value => this.setState({ inputValue: value })}
         />
+        <TouchableOpacity style={styles.addButton}>
+          <Text style={styles.buttonText}>ADD</Text>
+        </TouchableOpacity>
         <Text style={styles.theValue}>{ inputValue }</Text>
       </View>
     );
@@ -19,6 +22,18 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
+  addButton: {
+    marginLeft: 10,
+    justifyContent: "center",
+    backgroundColor: "green"
+  },
+  buttonText: {
+    margin: 5,
+    color: "white",
+  },
+  inputRow: {
+    flexDirection: "row"
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
