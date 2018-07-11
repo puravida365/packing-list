@@ -11,23 +11,45 @@ export default class App extends Component {
     const { items, inputValue } = this.state
     const newItems = items.concat(inputValue)
     this.setState({ items: newItems })
+    this.input.clear()
+    setTimeout(() => this.input.focus(), 100)
+  }
+
+  clearItems = () => {
+    this.setState({items: []})
+  }
+
+  renderInputRow = () => {
+    const {inputValue} = this.state
+
+    return (
+      <View style={styles.inputRow}>
+        <TextInput 
+          ref={taco => this.input = taco}
+          style={styles.input} 
+          value ={inputValue} 
+          onChangeText={value => this.setState({ inputValue: value })}
+          onSubmitEditing={this.addNewItem}
+          autoFocus
+        />
+        <TouchableOpacity style={styles.addButton} onPress={this.addNewItem}>
+          <Text style={styles.buttonText}>ADD</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.addButton, {backgroundColor: "gray"}} 
+          onPress={this.clearItems}
+        >
+        <Text style={styles.buttonText}>Clear</Text>
+        </TouchableOpacity>
+      </View>
+    )
   }
 
   render() {
     const { inputValue, items } = this.state
     return (
       <View style={styles.container}>
-        <View style={styles.inputRow}>
-          <TextInput 
-            style={styles.input} 
-            value ={inputValue} 
-            onChangeText={value => this.setState({ inputValue: value })}
-          />
-          <TouchableOpacity style={styles.addButton} onPress={this.addNewItem}>
-            <Text style={styles.buttonText}>ADD</Text>
-          </TouchableOpacity>
-          <Text style={styles.theValue}>{ inputValue }</Text>
-        </View>
+        {this.renderInputRow()}
         {items.map((item, i) => {
           return (
             <Text key={i} style={styles.theValue}>
@@ -36,7 +58,7 @@ export default class App extends Component {
           )
         })}
       </View>
-    );
+    )
   }
 }
 
@@ -62,7 +84,6 @@ const styles = StyleSheet.create({
   input: { 
     height: 40,
     width: "50%",
-    backgroundColor: "gray",
     borderWidth: 1,
     borderColor: "lightgray"
   },
